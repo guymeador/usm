@@ -189,6 +189,7 @@
 		#_SAP_        def NetworkSAP;
 		#_SDU_        def NetworkSDU;
 	    
+	    // * TODO Review00001: Add datalink sap client
 	    #_ProtocolEntity_ def NetworkProtocolEntity {
 	    	#_SAP_      saps    : NetworkSAP     [1] redefines saps;
 	        #_PDU_Port_ pduPort : NetworkPDUPort [1] redefines pduPorts;
@@ -277,9 +278,14 @@
 	        #_PDU_Port_ b : DataLinkProtocolB::DataLinkBPDUPort;
 	    }
 	    
+	    interface def DataLinkABLink :> DataLinkABConverter;
+	    
+	    // TODO Add an nterface way of achieving this capability as well
+	    
     }
     
     // Some Application
+    // * TODO Review00001: Consider a simpler example not using optionality for in-layer
     package AppX {
     	
     	
@@ -313,7 +319,7 @@
 	    	in  #_PDU_ i_apdu  : AppPDU;
 	    	out o_tsend : TransportProtocol::SigTransportSend;
 	    }
-	    
+	    // * TODO Review0001: Change names to OperateAppLayerVirtually, OperateOverTransport
 	    action def OperateAppLayerOnly {
 	    	in ref #_PDU_Port_ pduPort : AppPDUPort;
 
@@ -385,14 +391,14 @@
 	    #_ProtocolEntity_ def App{
 	    	in useTransport : ScalarValues::Boolean default false;
 	    	
-	    	#_PDU_Port_ pduPort : AppPDUPort;
+	    	#_PDU_Port_   pduPort : AppPDUPort;
 	    	#_SAP_Client_ tcl     : TransportProtocol::TransportSAPClient;
 	    	
-	    	bind operating.tcl = tcl;
+	    	bind operating.tcl     = tcl;
 	    	bind operating.pduPort = pduPort;
 
 			exhibit state operating{
-				in ref tcl : TransportProtocol::TransportSAPClient;
+				in ref tcl     : TransportProtocol::TransportSAPClient;
 				in ref pduPort : AppPDUPort;
 				
 				bind multiLayerMode.operateWithTransport.tcl = tcl;					

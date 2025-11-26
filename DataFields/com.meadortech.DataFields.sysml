@@ -2,6 +2,13 @@
 // # To view a copy of this license, visit https://spdx.org/licenses/Apache-2.0.html
 // SPDX-License-Identifier: Apache-2.0
 
+
+//*
+ * Review0001
+ * 
+ * * TODO Review0001 Refactor so that another package or packages have the specific datatypes and associated data fields
+ * * TODO Review0001 Ensure all needed doc comments are in place
+ */
 package 'com.meadortech.DataFields' {
 
     doc 
@@ -520,15 +527,28 @@ package 'com.meadortech.DataFields' {
 
 
 
+    abstract item def FixedPointPField :> EPF {
+        attribute delta {doc /* smallest spacing between values of the type being represented */}
+        attribute small {doc /* smallest spacing between values actually stored...Value of least significant bit */}
+        attribute rangeMin {doc /* minimum value of the type being represented */}
+        attribute rangeMax {doc /* maximum value of the type being represented */}
+        assert constraint checkRange { rangeMin <= rangeMax }
+    }
     
+    item def UFPPF :> FixedPointPField{
+    	:>> value : Natural default 0;
+    }
     
-    
-    abstract item def UnsignedFixedPointPField :> ExactlyPackedField {
+    item def SFPPF :> FixedPointPField {
+    	item sign : SignBit; // TODO FIXME finish working out this new direction
+    }
+    item def UnsignedFixedPointPField :> ExactlyPackedField {
         :>> value : Natural default 0;
-        abstract attribute delta {/* Accuracy */}
-        abstract attribute small {/* Precision...Value of least significant bit */}
-        abstract attribute rangeMin;
-        abstract attribute rangeMax;
+        attribute delta {doc /* smallest spacing between values of the type being represented */}
+        attribute small {doc /* smallest spacing between values actually stored...Value of least significant bit */}
+        attribute rangeMin {doc /* minimum value of the type being represented */}
+        attribute rangeMax {doc /* maximum value of the type being represented */}
+        assert constraint checkRange { rangeMin <= rangeMax }
     }
     
     enum def Sign :> Bit {

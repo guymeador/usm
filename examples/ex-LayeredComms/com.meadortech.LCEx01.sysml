@@ -17,6 +17,7 @@
 	
     part def ExampleSOI {
     	
+    	// * TODO Review00001: Consider other approaches to multi-box middle boxes
     	
         part def Stack1 {
 			#_ProtocolEntity_ ap1 : App = new App(useTransport = true);

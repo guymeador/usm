@@ -15,9 +15,14 @@ package 'com.meadortech.LayeredComms' {
          */    
 	comment Package_Overview about 'com.meadortech.LayeredComms'
 	/* 
-	 * TBD - Place extensive overview here
+	 * * TODO - Review0001 Place extensive overview here
+	 * * TODO - Review0001 How to refer to protocol specs? External ref facility coming (hpd)?
+	 * * TODO - Review0001 Need to address broadcast and multicast interfaces, etc.
+	 * * TODO - Review0001 Make semantic metadata usages more specific to appropriate base type
 	 */
 	alias DF for 'com.meadortech.DataFields'{ doc /* Provides bit-level representations */}
+	/* * TODO Review0001 provide alias for new package having specific data types and data fields 
+	 */
 	//
 	// Protocol Entity Aspects
 	//
@@ -54,19 +59,19 @@ package 'com.meadortech.LayeredComms' {
         abstract #_SAP_Client_   sapClients  [0..*] ordered{
         	doc
         	/*
-        	 * 
+        	 *  Represents the procol entity's client side of the n-1 protocol
         	 */
         }
-        abstract #_Protocol_Stm_ protocolStm [1]{
+        abstract #_Protocol_Stm_ protocolStm [1..*]{
         	doc
         	/*
-        	 * 
+        	 * TODO provide description 
         	 */
         }
         exhibit state peStm :> protocolStm{
         	doc
         	/*
-        	 * 
+        	 * TODO provide description
         	 */
         }
     }
@@ -149,11 +154,15 @@ package 'com.meadortech.LayeredComms' {
 			  */
         annotatedElement : SysML::Dependency redefines annotatedElement; 
     }
-		
+	comment about LayerMap 
+		/* * TODO - Review0001 Evaluate adding appropriate constraints about upper to lower "direction"
+		 * - skipping might actually be allowed, so this is an optional idea in general
+		 */
+	
     connection def <LayerMap> LayeredMapping {
          doc 
-	         /* Represents the fact that an element in a layered interface stack (mappedFrom) 
-	          * is mapped to another element (mappedTo) in some lower layer within a given context.
+	         /* Represents the fact that elements in a layered interface stack (mappedFrom) 
+	          * is mapped to other elements (mappedTo) in some lower layer(s) within a given context.
 	          * The LayerMap does not restrict the mappedTo element to be within the n-1 layer;
 	          * in other words, layers can be skipped -- or crossed over -- with the LayerMap
 	          * connection.
@@ -167,7 +176,7 @@ package 'com.meadortech.LayeredComms' {
 	          * LayerMap is transitive, meaning if A=>B and B=>C then A=>C.
 	          * However, M=>P and M=>N does not imply N=>P.
 	          * 
-	          * Additional constraints may be needed to restrict to layers
+	          * Additional constraints may be needed to restrict to specific layers
 	          */
     	end [1..*] ref mappedFrom : Occurrences::Occurrence;
     	end [1..*] ref mappedTo   : Occurrences::Occurrence;
@@ -189,11 +198,18 @@ package 'com.meadortech.LayeredComms' {
         annotatedElement : SysML::Dependency redefines annotatedElement; 
     }
     
+    comment about depPDUPort
+    /* 	 * TODO - Review0001 Discussion underway as to efficacy
+     *   * TODO - Review0001 Consider need for "encapsulated in" dependency
+     *     - and/or connection relationship for this meaning
+     *     - 
+    */    
+    
     metadata def <depPDUPort> _DependsOnPDUPort_ {
         doc /*
          * This dependency represents the fact that a given PDU
          * Port in a protocol stack directly depends on another
-         * PDU Portat the next layer below in the protocol stack.
+         * PDU Port at the next layer below in the protocol stack.
          */
         annotatedElement : SysML::Dependency redefines annotatedElement; 
     }
@@ -236,6 +252,7 @@ package 'com.meadortech.LayeredComms' {
     //
     // SDU Aspects
     //
+    // * TODO Review0001 - Consider adding SDU directional features on SAP/Client ports
     abstract item def <SDU> ServiceDataUnit{}
     item serviceDataUnits : ServiceDataUnit [0..*] nonunique;
 	metadata def <_SDU_> SDUMetadata :> Metaobjects::SemanticMetadata {
@@ -264,7 +281,7 @@ package 'com.meadortech.LayeredComms' {
 	}
 	part sduLinks : SDULink [0..*] nonunique;
 	metadata def <_SDU_Link_> SDULinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = sduLinks meta SysML::Usage;
+		:>> baseType = sduLinks meta SysML::InterfaceUsage;
         protocolName : ScalarValues::String; 
 	}
 	
@@ -274,14 +291,21 @@ package 'com.meadortech.LayeredComms' {
 	abstract state def ProtocolStateMachine;
 	state protocolStateMachines : ProtocolStateMachine [0..*] nonunique;
 	metadata def <_Protocol_Stm_> ProtocolStmLinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = protocolStateMachines meta SysML::Usage;
+		:>> baseType = protocolStateMachines meta SysML::StateUsage;
         protocolName : ScalarValues::String; 
 	}
 	
 	
-	
+	// * TODO Review0001: Clearly mark science experiment for protocol and protocol binding reification in initial release
+	//   - there are difficulties between abstract definition of a protocol and
+	//     reification in an implementation (or model of that)
+	// Protocol Binding - Experimental Approach
 	//
-	// Protocol Binding
+	// * TODO Review0001 The current approach needs some re-work
+	// - The representation below really applies to a single set of
+	//   PEs and their relationships, not the protocol in general.
+	// - Other approaches that have more of a meta-level set of
+	//   relationships are likely more appropriate
 	//
 	connection def ProtocolBinding {
 		end [*] #_Comms_Protocol_ upper : CommsProtocol;
@@ -308,7 +332,7 @@ package 'com.meadortech.LayeredComms' {
 
 	package 'Alternate approach to CommsProtocol'{        
     //    
-    // Alternate Approach TBD, which one to use?
+    // Alternate Approach TBD, which one to use, if at all?
     //
     	//abstract part def CommsProto {}
     	abstract connection def CommsProtocol_to_Entity {
