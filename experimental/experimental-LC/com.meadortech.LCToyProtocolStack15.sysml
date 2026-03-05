@@ -7,9 +7,9 @@
  package 'com.meadortech.LCToyProtocolStack01'{
 
 	alias DF for 'com.meadortech.DataFields';
+	alias DFT for 'com.meadortech.DFNumerics';
 	alias LC for 'com.meadortech.LayeredComms';
     alias NP for NetworkProtocol;
-    alias TPB for TransportProtocolBindings;
 
 
 	private import 'com.meadortech.LayeredComms'::**;
@@ -17,28 +17,10 @@
 	
 	// Common for the stack
 	
-    item def NetworkAddress :> DF::Word128;
+    item def NetworkAddress :> DFT::Word128;
 
-	package TransportProtocolBindings{
-		#_Protocol_Binding_ def Transport_Over_Network {
-			end #_Comms_Protocol_ upper : TransportProtocol::TransportCommsProtocol;
-			end #_Comms_Protocol_ lower :  NetworkProtocol::NetworkCommsProtocol;
-		}
-	}
- 
 	package TransportProtocol {   
      	@ProtocolPackage{protocolName="Transport";}
-	    
-		// TODO add values to refs below	    
-	    #_Comms_Protocol_ def TransportCommsProtocol {
-	    	ref #_ProtocolEntity_   pes      : TransportProtocolEntity [1] redefines pes;
-	    	ref #_PDU_              pdus     : TransportPDU                redefines pdus; 
-	    	ref #_SDU_              sdus     : TransportSDU                redefines sdus;
-	    	ref #_PDU_Link_         pduLinks : TransportLink               redefines pduLinks;
-	    	ref #_SDU_Link_         sduLinks : TransportSDULink            redefines sduLinks;
-//	    	ref #_Protocol_Binding_ carries [0]                            redefines carries;
-//	    	ref #_Protocol_Binding_ carriedBy [1]                          redefines carriedBy;
-	    }
 	    
 	    #_ProtocolEntity_ def TransportProtocolEntity  {
 	    	protocolName = "Transport";
@@ -72,9 +54,9 @@
 	
 		//// SAP-related
 		
-		item def TransportPortNumber :> DF::Word64;
+		item def TransportPortNumber :> DFT::Word64;
 		
-		enum def TransportWellKnownPortNumbers :> DF::Natural64{
+		enum def TransportWellKnownPortNumbers :> DFT::Natural64{
 			enum APP = 8080;
 		}
 		
@@ -153,17 +135,6 @@
 
 	package NetworkProtocol {   
      	@ProtocolPackage{protocolName="Network";}
-
-		// TODO add values to refs below	    
-	    #_Comms_Protocol_ def NetworkCommsProtocol {
-	    	ref #_ProtocolEntity_   pes      : NetworkProtocolEntity     redefines pes;
-	    	ref #_PDU_              pdus     : NetworkPDU                redefines pdus; 
-	    	ref #_SDU_              sdus     : NetworkSDU                redefines sdus;
-	    	ref #_PDU_Link_         pduLinks : NetworkLink               redefines pduLinks;
-	    	ref #_SDU_Link_         sduLinks : NetworkSDULink            redefines sduLinks;
-//	    	ref #_Protocol_Binding_ carries [1]                     redefines carries = TPB::transport_Over_Network;
-//	    	ref #_Protocol_Binding_ carriedBy [0]                   redefines carriedBy;
-	    }
 
 	    #_PDU_ def NetworkPDU;
 	    

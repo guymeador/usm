@@ -1,28 +1,51 @@
 /* 
- * This file © 2025 by Guy Meador is licensed under Apache-2.0
+ * This file © 2025-2026 by Guy Meador is licensed under Apache-2.0
  * To view a copy of this license, visit https://spdx.org/licenses/Apache-2.0.html
  * SPDX-License-Identifier: Apache-2.0
  */  
  
-package 'com.meadortech.LayeredComms' {
+library package 'com.meadortech.LayeredComms' {
     doc 
         /* 
-         * This package © 2025 by Guy Meador is licensed under Apache-2.0
+         * This package © 2025-2026 by Guy Meador is licensed under Apache-2.0
          * To view a copy of this license, visit https://spdx.org/licenses/Apache-2.0.html
          * SPDX-License-Identifier: Apache-2.0
          * 
          * See the comment Package_Overview for additional information
-         */    
-	comment Package_Overview about 'com.meadortech.LayeredComms'
+         */
+
+	comment Package_Overview
+		/* 
+		 The purpose of com.meadortech.LayeredComms is to provide a framework & building blocks for 
+		 SysML 2 models constructed to specify protocols, the layering of protocols, and the use of 
+		 elements from those protocol-specification models in other models. Interoperability of 
+		 communicating entities using these protocols and the layering of these protocols are key goals.
+
+		 It very intentionally is informed strongly by the ISO OSI protocol definition and layering concepts
+		 and brings a form of those concepts into an expression in SysML 2.
+
+		 For example, protocol entities and all their aspects are key to describing protocols and their 
+		 layering in OSI, so they are fundamental to the building blocks LayeredComms provides. As far as a 
+		 LayeredComms protocol specification approach is concerned, for a system to conform to a protocol means 
+		 that it logically provides at least one protocol entity for the protocol that meets what is defined for 
+		 that protocol entity type as expressed with the LayredComms building blocks. Doing so does not specify 
+		 the implementation within that system and does not even require a specific designed realization within 
+		 that system. This is a common approach supported by the OSI and provided by LayeredComms package. It is 
+		 well-understood and accepted for those working in the layered protocol stack world.
+
+		 Those using this package are encouraged to become familiar with ISO OSI.
+	  	 */    
+	comment TODOs
 	/* 
 	 * * TODO - Review0001 Place extensive overview here
 	 * * TODO - Review0001 How to refer to protocol specs? External ref facility coming (hpd)?
 	 * * TODO - Review0001 Need to address broadcast and multicast interfaces, etc.
-	 * * TODO - Review0001 Make semantic metadata usages more specific to appropriate base type
+	 * * WITHDRAWN - Review0001 Make semantic metadata usages more specific to appropriate base type
+	 * * TODO - Review0001 Make semantic metadata have base type of SysML::Type
+	 * * TODO - Review0001 Make all use of user defined keywords also name SysML keywords (ex. part def)
 	 */
-	alias DF for 'com.meadortech.DataFields'{ doc /* Provides bit-level representations */}
-	/* * TODO Review0001 provide alias for new package having specific data types and data fields 
-	 */
+
+
 	//
 	// Protocol Entity Aspects
 	//
@@ -38,48 +61,49 @@ package 'com.meadortech.LayeredComms' {
     	/* 
     	 * Reference the OSI general model for protocol entities.
     	 */
-        abstract #_PDU_Port_     pduPorts    [1..*] ordered{
+        abstract #_PDU_Port_     part pduPorts    [1..*] ordered{
         	doc 
         	/*  
         	 *	*PDU Ports* are on the boundary of a protocol entity and represent the
 	         *	well-defined points where the protocol entity sends and receives
-	         *	the protocol's Protocol Data Units.
+	         *	Protocol Data Units (PDUs).
         	 */
         }
-        abstract #_SAP_          saps        [0..*] ordered{
+        abstract #_SAP_          part saps        [0..*] ordered{
         	doc
         	/*
         	 *	*Service Access Points*
         	 *	SAPs are on the boundary of a protocol entity and represent the
 	         *	well-defined points where the protocol entity sends and receives
-	         *	the protocol's Service Data Units.
+	         *	the protocol's Service Data Units (SDUs).
         	 *	
         	 */
         }
-        abstract #_SAP_Client_   sapClients  [0..*] ordered{
+        abstract #_SAP_Client_   part sapClients  [0..*] ordered{
         	doc
         	/*
-        	 *  Represents the procol entity's client side of the n-1 protocol
+        	 *  Represents the procol entity's client side of the n-1 protocol's SAP
         	 */
         }
-        abstract #_Protocol_Stm_ protocolStm [1..*]{
+        abstract #_Protocol_Stm_ part protocolStm [1..*] ordered {
         	doc
         	/*
-        	 * TODO provide description 
+        	 * Each protocol entity has at least one state machine that governs
+			 * its protocol-related operation.
         	 */
         }
         exhibit state peStm :> protocolStm{
         	doc
         	/*
-        	 * TODO provide description
+        	 * The protocol state machine(s) exhibited by the protocol entity.
         	 */
         }
     }
 
-	part protocolEntities : ProtocolEntity[0..*] nonunique;
+	abstract part protocolEntities : ProtocolEntity[0..*] nonunique;
 	
 	metadata def <_ProtocolEntity_> ProtocolEntityMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = protocolEntities meta SysML::Usage;
+		:>> baseType = protocolEntities meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 
@@ -95,34 +119,42 @@ package 'com.meadortech.LayeredComms' {
     	 * PDU Aspects
     	 */
         
-    abstract item def <PDU> ProtocolDataUnit;
-    
-    item protocolDataUnits : ProtocolDataUnit [0..*] nonunique;
+    abstract item def <PDU> ProtocolDataUnit{
+		doc 
+			/* Protocol Data Units per OSI */
+
+	}
+    abstract item protocolDataUnits : ProtocolDataUnit [0..*] nonunique;
     
 	metadata def <_PDU_> PDUMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = protocolDataUnits meta SysML::Usage;
+			
+		:>> baseType = protocolDataUnits meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 
     abstract port def PDUPort{
-        inout abstract #_PDU_ io_pdu;
+		doc
+			/* I/O point for the PDUs of the protocol */
+        inout abstract #_PDU_ item io_pdu;
     }
-    port pduPorts : PDUPort [0..*] nonunique;
+    abstract port pduPorts : PDUPort [0..*] nonunique;
 
 	metadata def <_PDU_Port_> PDUPortMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = pduPorts meta SysML::Usage;
+		:>> baseType = pduPorts meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 
-    abstract interface def PDULink {
-        end a : PDUPort [1];
-        end b : PDUPort [1];
+    abstract connection def PDULink {
+		doc	
+			/* An interface between two protocol entities of the same protocol. */
+        end #_PDU_Port_ port a : PDUPort [1];
+        end #_PDU_Port_ port b : PDUPort [1];
     }
 
-    part pduLinks : PDULink[0..*] nonunique;
+    abstract connection pduLinks : PDULink[0..*] nonunique;
 
 	metadata def <_PDU_Link_> PDULinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = pduLinks meta SysML::Usage;
+		:>> baseType = pduLinks meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 
@@ -182,9 +214,9 @@ package 'com.meadortech.LayeredComms' {
     	end [1..*] ref mappedTo   : Occurrences::Occurrence;
     }
     
-    part layeredMappings : LayeredMapping [0..*];
+    abstract part layeredMappings : LayeredMapping [0..*];
 	metadata def <_LayerMap_> LayerMapMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = layeredMappings meta SysML::Usage;
+		:>> baseType = layeredMappings meta SysML::Type;
 	}
 
 
@@ -212,21 +244,28 @@ package 'com.meadortech.LayeredComms' {
          * PDU Port at the next layer below in the protocol stack.
          */
         annotatedElement : SysML::Dependency redefines annotatedElement; 
+
+		comment c1 about depPDUPort
+			/* 	* TODO - Review0001 Discussion underway as to efficacy
+			*   * TODO - Review0001 Consider need for "encapsulated in" dependency
+			*     - and/or connection relationship for this meaning
+			*/    
+			
     }
 
 
     connection def OverPDULink {
          doc 
 	         /* The Over connection represents the fact that a given PDU
-	          * interface in a protocol stack directly depends on another
-	          * PDU interface at the protocol stack layer below it.
+	          * interface in a protocol stack (N) directly depends on another
+	          * PDU interface at the protocol stack layer below it (N-1).
 	          */
-    	end upper : PDULink [1];
-    	end lower : PDULink [1];
+    	end #_PDU_Link_ connection upper : PDULink [1];
+    	end #_PDU_Link_ connection lower : PDULink [1];
     }
-    part overPDULinks : OverPDULink [0..*];
+    abstract part overPDULinks : OverPDULink [0..*];
 	metadata def <_Over_PDU_Link_> OverPDULinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = overPDULinks meta SysML::Usage;
+		:>> baseType = overPDULinks meta SysML::Type;
 	}
     
     connection def OverPDUPort {
@@ -238,12 +277,12 @@ package 'com.meadortech.LayeredComms' {
 	          * upper protocol for that port are encapsulated in the lower 
 	          * protocol of the lower port.
 	          */
-    	end upper : PDUPort [1];
-    	end lower : PDUPort [1];
+    	end #_PDU_Port_ port upper : PDUPort [1];
+    	end #_PDU_Port_ port lower : PDUPort [1];
     }
-    part overPDUPorts : OverPDUPort [0..*];
+    abstract part overPDUPorts : OverPDUPort [0..*];
 	metadata def <_Over_PDU_Port_> OverPDUPortMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = overPDUPorts meta SysML::Usage;
+		:>> baseType = overPDUPorts meta SysML::Type;
 	}
     
 
@@ -253,135 +292,74 @@ package 'com.meadortech.LayeredComms' {
     // SDU Aspects
     //
     // * TODO Review0001 - Consider adding SDU directional features on SAP/Client ports
-    abstract item def <SDU> ServiceDataUnit{}
-    item serviceDataUnits : ServiceDataUnit [0..*] nonunique;
+    abstract item def <SDU> ServiceDataUnit{
+		doc 
+			/* Service Data Units of a protocol that are exchanged 
+			 * with the client protocole entity in the layer above.
+			 * See OSI for more. 
+			 */
+	}
+    abstract item serviceDataUnits : ServiceDataUnit [0..*] nonunique;
 	metadata def <_SDU_> SDUMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = serviceDataUnits meta SysML::Usage;
+		:>> baseType = serviceDataUnits meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
     
-    abstract port def <SAP> ServiceAccessPoint{}
-    port serviceAccessPoints : ServiceAccessPoint [0..*] nonunique;
+    abstract port def <SAP> ServiceAccessPoint{
+		doc 
+			/* The protocol entity Service Access Point per OSI. */
+	}
+    abstract port serviceAccessPoints : ServiceAccessPoint [0..*] nonunique;
 	metadata def <_SAP_> SAPMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = serviceAccessPoints meta SysML::Usage;
+		:>> baseType = serviceAccessPoints meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
     
-    abstract port def <SAPClient> SAPClientPort{}
+    abstract port def <SAPClient> SAPClientPort{
+		doc 
+			/* The N protocol's client to the N-1 protocol's SAPs per OSI. */
+	}
     port serviceAccessPointClients : SAPClientPort [0..*] nonunique;
 	metadata def <_SAP_Client_> SAPClientMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = serviceAccessPointClients meta SysML::Usage;
+		:>> baseType = serviceAccessPointClients meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 
 
-    abstract interface def SDULink {
-        end sapCl  : SAPClient [1];
-        end sap    : SAP [1];
+    abstract connection def SDULink {
+		doc
+			/* Interface between the N-1 and N protocol entities. */
+        end #_SAP_Client_ port sapCl  : SAPClient [1];
+        end #_SAP_        port sap    : SAP [1];
 	}
-	part sduLinks : SDULink [0..*] nonunique;
+	abstract connection sduLinks : SDULink [0..*] nonunique;
 	metadata def <_SDU_Link_> SDULinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = sduLinks meta SysML::InterfaceUsage;
+		:>> baseType = sduLinks meta SysML::Type;
         protocolName : ScalarValues::String; 
 	}
 	
 	//
 	// Protocol State Machines
 	//
-	abstract state def ProtocolStateMachine;
-	state protocolStateMachines : ProtocolStateMachine [0..*] nonunique;
+	abstract state def ProtocolStateMachine{
+		doc
+			/* Base type for all protocol state machines. */
+	}
+	abstract state protocolStateMachines : ProtocolStateMachine [0..*] nonunique;
 	metadata def <_Protocol_Stm_> ProtocolStmLinkMetadata :> Metaobjects::SemanticMetadata {
 		:>> baseType = protocolStateMachines meta SysML::StateUsage;
         protocolName : ScalarValues::String; 
 	}
-	
-	
-	// * TODO Review0001: Clearly mark science experiment for protocol and protocol binding reification in initial release
-	//   - there are difficulties between abstract definition of a protocol and
-	//     reification in an implementation (or model of that)
-	// Protocol Binding - Experimental Approach
-	//
-	// * TODO Review0001 The current approach needs some re-work
-	// - The representation below really applies to a single set of
-	//   PEs and their relationships, not the protocol in general.
-	// - Other approaches that have more of a meta-level set of
-	//   relationships are likely more appropriate
-	//
-	connection def ProtocolBinding {
-		end [*] #_Comms_Protocol_ upper : CommsProtocol;
-		end [*] #_Comms_Protocol_ lower : CommsProtocol;
-	}
-	part protocolBindings : ProtocolBinding [0..*];
-	metadata def <_Protocol_Binding_> ProtocolBindingMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = protocolBindings meta SysML::Usage;
-	}
 
-	abstract part def <CommsProtocol> CommunicationsProtocol {
-		ref #_ProtocolEntity_      pes         [1..*];
-		ref #_PDU_                 pdus        [1..*];
-		ref #_SDU_                 sdus        [1..*];
-		ref #_PDU_Link_            pduLinks    [1..*];
-		ref #_SDU_Link_            sduLinks    [1..*];
-		ref #_Protocol_Binding_    carries     [0..*]; 
-		ref #_Protocol_Binding_    carriedBy   [0..*]; 
-	}
-	part commsProtocols : CommunicationsProtocol [0..*];
-	metadata def <_Comms_Protocol_> CommsProtocolLinkMetadata :> Metaobjects::SemanticMetadata {
-		:>> baseType = commsProtocols meta SysML::Usage;
-        protocolName : ScalarValues::String; 
-
-	package 'Alternate approach to CommsProtocol'{        
-    //    
-    // Alternate Approach TBD, which one to use, if at all?
-    //
-    	//abstract part def CommsProto {}
-    	abstract connection def CommsProtocol_to_Entity {
-    		end [0..*] #_Comms_Protocol_ protocol : CommsProtocol;
-    		end [1..*] #_ProtocolEntity_ pe       : ProtocolEntity;
-    	}
-    	
-		package MyProtocol {
-			
-	    	abstract #_ProtocolEntity_ def MyProtoEntity;
-	    	#_ProtocolEntity_ def Sender :> MyProtoEntity;
-	    	#_ProtocolEntity_ def Receiver :> MyProtoEntity;
-
-	    	#_Comms_Protocol_ def MyProto :> CommsProtocol{
-
-				ref #_ProtocolEntity_ pes  : MyProtoEntity redefines pes;
-				ref #_ProtocolEntity_ spe  : Sender [0..1] subsets pes;
-				ref #_ProtocolEntity_ rpes : Receiver [*] subsets pes;
-				
-				comment about MyProto /* other refs omitted for this example*/
-	    	}
-
-	    	connection def MyProto_to_Sender :> CommsProtocol_to_Entity {
-	    		end [1] #_Comms_Protocol_ protocol : MyProto redefines protocol;
-	    		end [1] #_ProtocolEntity_ pe       : Sender  redefines pe;
-	    	}
-	    	connection def MyProto_to_Receiver :> CommsProtocol_to_Entity {
-	    		end [1   ] ref protocol : MyProto redefines protocol;
-	    		end [1..*] ref pe : Receiver redefines pe;
-	    	}
-		}    	
-
-		#_ProtocolEntity_ s1 : MyProtocol::Sender;    	
-		#_ProtocolEntity_ r1 : MyProtocol::Receiver;    	
-		#_ProtocolEntity_ r2 : MyProtocol::Receiver;    	
-		#_ProtocolEntity_ r3 : MyProtocol::Receiver;    	
-
-		#_Comms_Protocol_ prtcl01 : MyProtocol::MyProto{
-			connection s_1 : MyProtocol::MyProto_to_Sender   connect prtcl01 to s1;
-			connection r_1 : MyProtocol::MyProto_to_Receiver connect prtcl01 to r1;    	
-			connection r_2 : MyProtocol::MyProto_to_Receiver connect prtcl01 to r2;    	
-			connection r_3 : MyProtocol::MyProto_to_Receiver connect prtcl01 to r3; 
-			
-			:>> spe = s1;
-			:>> rpes = (r1, r2, r3);  	
-		}
-	}
-	
-    metadata def <protocol> Protocol {
+    // Sets of PDU Links
+     
+    item def PDULinkSet {
+		doc
+			/* Convenience type to collect together sets of PDULinks. */
+        ref #_PDU_Link_ members : PDULink [*]; 
+    }
+    
+     metadata def <protocol> Protocol {
         doc 
         /*
          * Provides for indicating the protocol associated with annotatedElement.
@@ -394,14 +372,5 @@ package 'com.meadortech.LayeredComms' {
         annotatedElement : SysML::Package redefines annotatedElement;
         protocolName : ScalarValues::String; 
     }
-	
 
-    // Sets of PDU Links
-     
-    item def PDULinkSet {
-        ref members : PDULink [*]; 
-    }
-    
- }
- 
  }
