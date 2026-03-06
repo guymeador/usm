@@ -5,7 +5,7 @@
 package 'com.meadortech.DFEx001' {
     doc 
         /* 
-         * This package © 2025 by Guy Meador is licensed under Apache-2.0
+         * This package © 2025-2026 by Guy Meador is licensed under Apache-2.0
          * To view a copy of this license, visit https://spdx.org/licenses/Apache-2.0.html
          * SPDX-License-Identifier: Apache-2.0
          * 
