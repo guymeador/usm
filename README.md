@@ -11,9 +11,9 @@ It is a beginning.
 
 - DataFields - Libraries for modeling information/data with or without bit layout representation
     - com.meadortech.Datafields.sysml - Base library
+    - com.meadortech.DFScalarValues.sysml - Representation of common scalar data types
 - LayeredComms - Library with building blocks for layered communications stack modeling inspired by ISO OSI
     - com.meadortech.LayeredComms.sysml - Base Library for protocol definition, layering & use
-    - com.meadortech.DFScalarValues.sysml - Representation of common scalar data types
 - examples - Basic examples of using the above libraries
     - Simple DataField/DFScalarValues examples
     - Sketch of toy layered protocol definition and use
