@@ -205,7 +205,7 @@ libraries will carry separate semantic versioning.
 TBD
 
 ## With Appreciation
-### Initial Alpha 0.0.1 Release
+### Initial 0.1.0-alpha Release
 
 Thank you to the OMG System Modeling Community User WG’s Layered Interface Pattern subgroup members listed below. 
 Your perspectives, wise counsel, feedback, advice, review, discussion, and patience have made this work all the better!
@@ -235,6 +235,19 @@ Separate feedback was also received from others listed here. Thank you!:
         - Layered Interface Pattern Working Group
             - Advanced the examples from the above papers using SysML 2
 
+## Contributions
+Contributions must be under the Apache-2.0 license.
+
+Contributions not bearing license information will be considered to 
+be offered under the Apache-2.0 license.
+
+Contributions under any other license will not be accepted.
+
+The procedures for contributing to this work are still being worked out
+so please be patient and check back for updates. However, the intention
+is that there will be a selected committer tier and a way for non-committers to 
+offer suggested updates (either via pull requests or suggested patches via a
+TBD email reflector, etc.); those specific details are being decided.
 
 ## Copyright and Distribution License
 Unless otherwise stated for specific files or directories, the following copyright and distribution license
