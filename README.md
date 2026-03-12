@@ -224,16 +224,18 @@ Separate feedback was also received from others listed here. Thank you!:
 
 ## Other Resources
 
-- 2015-2016 Original JPL models and papers
+- 2015-2016 Original INCOSE papers and model
     - Peter M. Shames, Marc A. Sarrel, Sanford Friedenthal
         - http://www.omgsysml.org/A_modeling_pattern_for_layered_system_interfaces-INCOSE%20IS15_presentation-sarrel-shames.pdf 
         - http://www.omgsysml.org/A_modeling_pattern_for_layered_system_interfaces-INCOSE%20IS15_paper-sarrel-shames.pdf 
         - http://www.omgsysml.org/INCOSE_IS_2016_paper_Application-of-a-Layered-Interface-Modeling-Pattern.pdf 
 
-- OMG System Modeling Community
+- OMG System Modeling Community (Please join to participate)
     - Users Working Group
         - Layered Interface Pattern Working Group
             - Advanced the examples from the above papers using SysML 2
+            - Updates to the original SysML v1 model from the above papers to express in SysML v2
+            - Other related papers and information available in the OMG SMC
 
 ## Contributions
 Contributions must be under the Apache-2.0 license.
