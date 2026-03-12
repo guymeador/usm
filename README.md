@@ -231,6 +231,7 @@ Separate feedback was also received from others listed here. Thank you!:
         - http://www.omgsysml.org/INCOSE_IS_2016_paper_Application-of-a-Layered-Interface-Modeling-Pattern.pdf 
 
 - OMG System Modeling Community (Please join to participate)
+    - [Systems Modeling Community | Object Management Group](https://www.omg.org/communities/systems-modeling-community.htm)
     - Users Working Group
         - Layered Interface Pattern Working Group
             - Advanced the examples from the above papers using SysML 2
