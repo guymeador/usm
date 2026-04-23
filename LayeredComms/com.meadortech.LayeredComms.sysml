@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */  
  
-library package 'com.meadortech.LayeredComms' {
+ package 'com.meadortech.LayeredComms' {
     doc 
         /* 
          * This package © 2025-2026 by Guy Meador is licensed under Apache-2.0
@@ -373,4 +373,31 @@ library package 'com.meadortech.LayeredComms' {
         protocolName : ScalarValues::String; 
     }
 
+	package ProtocolStacks {
+		abstract part def LayeredProtocol {
+			doc
+				/* A protocol that is layered with other protocols in a protocol stack. */
+
+	        attribute protocolName : ScalarValues::String; 
+			ref       over         : LayeredProtocol [0..*] ordered {
+				doc
+				/* The protocol(s) that this protocol is layered over in a protocol stack. */
+			}
+			
+		}
+
+		connection def LayeredOn {
+			doc
+				/* The LayeredOn connection represents the fact that a given protocol is layered on top of another protocol in a protocol stack. */
+			end upper : LayeredProtocol [1];
+			end lower : LayeredProtocol [1];
+		}
+
+		part def ProtocolStack specializes LayeredProtocol {
+			doc
+				/* A protocol stack is a collection of protocols that are layered together. */
+			part protocols : LayeredProtocol [1..*];
+			
+		}
+	}
  }
