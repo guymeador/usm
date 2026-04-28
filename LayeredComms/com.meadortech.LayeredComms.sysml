@@ -359,14 +359,14 @@
         ref #_PDU_Link_ members : PDULink [*]; 
     }
     
-     metadata def <protocol> Protocol {
-        doc 
-        /*
-         * Provides for indicating the protocol associated with annotatedElement.
-         */
-        annotatedElement : SysML::Definition redefines annotatedElement;
-        protocolName : ScalarValues::String; 
-    }
+    //  metadata def <protocol> Protocol {
+    //     doc 
+    //     /*
+    //      * Provides for indicating the protocol associated with annotatedElement.
+    //      */
+    //     annotatedElement : SysML::Definition redefines annotatedElement;
+    //     protocolName : ScalarValues::String; 
+    // }
 	
     metadata def ProtocolPackage {
         annotatedElement : SysML::Package redefines annotatedElement;
@@ -374,16 +374,11 @@
     }
 
 	package ProtocolStacks {
-		abstract part def LayeredProtocol {
+		part def LayeredProtocol {
 			doc
 				/* A protocol that is layered with other protocols in a protocol stack. */
 
-	        attribute protocolName : ScalarValues::String; 
-			ref       over         : LayeredProtocol [0..*] ordered {
-				doc
-				/* The protocol(s) that this protocol is layered over in a protocol stack. */
-			}
-			
+	        attribute protocolName : ScalarValues::String; 			
 		}
 
 		connection def LayeredOn {
@@ -399,5 +394,23 @@
 			part protocols : LayeredProtocol [1..*];
 			
 		}
+
+	    port def ProtocolStackPort {
+			doc
+				/* A port for a protocol stack. */
+			ref stack : ProtocolStack;
+    	}
+
+		interface def ProtocolStackInterface {
+			part stack : ProtocolStack;
+			end endA : ProtocolStackPort;
+			end endB : ProtocolStackPort;
+		}
+
+		connection def ProtocolStackHConn {
+			end endA : LayeredProtocol;
+			end endB : LayeredProtocol;
+		}
+
 	}
  }
