@@ -17,20 +17,20 @@ package 'com.meadortech.LCEx100'{
     private import 'com.meadortech.LayeredComms'::**;
 
     package LayeredProtocolsCollection {
-        part def APP specializes LayeredProtocol;
-        part def IGMP specializes LayeredProtocol;
-        part def HTTP specializes LayeredProtocol;
-        part def TCP specializes LayeredProtocol;
-        part def UDP specializes LayeredProtocol;
-        part def IP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def APP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def IGMP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def HTTP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def TCP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def UDP specializes LayeredProtocol;
+        #_LayeredProtocol_ part def IP specializes LayeredProtocol;
     }
 
     alias LPC for LayeredProtocolsCollection;
 
     part def Multicast_Stack specializes ProtocolStack{
         :>> protocols [2] = (IGMP, IP);
-        part IGMP : LPC::IGMP subsets protocols;
-        part IP   : LPC::IP subsets protocols;
+        #_LayeredProtocol_ part IGMP : LPC::IGMP subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP subsets protocols;
 
         connection ovr1 : LayeredOn {
             end upper ::> IGMP;
@@ -44,9 +44,9 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [3]  = (HTTP, TCP, IP);
 
-        part HTTP : LPC::HTTP subsets protocols;
-        part TCP  : LPC::TCP  subsets protocols;
-        part IP   : LPC::IP   subsets protocols;
+        #_LayeredProtocol_ part HTTP : LPC::HTTP subsets protocols;
+        #_LayeredProtocol_ part TCP  : LPC::TCP  subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP   subsets protocols;
         
         connection ovr1 : LayeredOn {
             end upper ::> HTTP;
@@ -61,10 +61,10 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [4] = (HTTP, TCP, UDP, IP);
 
-        part HTTP : LPC::HTTP subsets protocols;
-        part TCP  : LPC::TCP  subsets protocols;
-        part UDP  : LPC::UDP  subsets protocols;
-        part IP   : LPC::IP   subsets protocols;
+        #_LayeredProtocol_ part HTTP : LPC::HTTP subsets protocols;
+        #_LayeredProtocol_ part TCP  : LPC::TCP  subsets protocols;
+        #_LayeredProtocol_ part UDP  : LPC::UDP  subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP   subsets protocols;
     }
     part def SimpleStack2_1 specializes ProtocolStack {
         doc
@@ -72,10 +72,10 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [4] = (HTTP, TCP, UDP, IP);
         
-        part HTTP : LPC::HTTP subsets protocols;
-        part TCP  : LPC::TCP  subsets protocols;
-        part UDP  : LPC::UDP  subsets protocols;
-        part IP   : LPC::IP   subsets protocols;
+        #_LayeredProtocol_ part HTTP : LPC::HTTP subsets protocols;
+        #_LayeredProtocol_ part TCP  : LPC::TCP  subsets protocols;
+        #_LayeredProtocol_ part UDP  : LPC::UDP  subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP   subsets protocols;
 
         connection ovr1 : LayeredOn connect upper::>HTTP to lower::>TCP;
         connection ovr2 : LayeredOn connect upper::>TCP to lower::>IP;
@@ -89,9 +89,9 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [3] = (APP, UDP, IP);
         
-        part APP : LPC::APP subsets protocols;
-        part UDP : LPC::UDP subsets protocols;
-        part IP  : LPC::IP  subsets protocols;
+        #_LayeredProtocol_ part APP : LPC::APP subsets protocols;
+        #_LayeredProtocol_ part UDP : LPC::UDP subsets protocols;
+        #_LayeredProtocol_ part IP  : LPC::IP  subsets protocols;
 
         connection ovr1  : LayeredOn connect upper::>APP to lower::>UDP;
         connection ovr2  : LayeredOn connect upper::>UDP to lower::>IP;
@@ -102,14 +102,14 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [5] = (APP_Stack, HTTP, TCP, UDP, IP);
 
-        part APP_Stack : AppStack subsets protocols;
+        #_LayeredProtocol_ part APP_Stack : AppStack subsets protocols;
         bind APP_Stack.UDP = UDP;
         bind APP_Stack.IP  = IP;
 
-        part HTTP : LPC::HTTP subsets protocols;
-        part TCP  : LPC::TCP  subsets protocols;
-        part UDP  : LPC::UDP  subsets protocols;
-        part IP   : LPC::IP   subsets protocols;
+        #_LayeredProtocol_ part HTTP : LPC::HTTP subsets protocols;
+        #_LayeredProtocol_ part TCP  : LPC::TCP  subsets protocols;
+        #_LayeredProtocol_ part UDP  : LPC::UDP  subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP   subsets protocols;
 
         connection ovr1 : LayeredOn connect upper::>HTTP to lower::>TCP;
         connection ovr2 : LayeredOn connect upper::>TCP to lower::>IP;
@@ -129,7 +129,7 @@ package 'com.meadortech.LCEx100'{
 
         :>> protocols : LayeredProtocol [1] = IP;
 
-        part IP : LPC::IP subsets protocols {}
+        #_LayeredProtocol_ part IP : LPC::IP subsets protocols {}
     }
     port def WAN_IP_StackPort specializes ProtocolStackPort {
         doc
@@ -153,11 +153,11 @@ package 'com.meadortech.LCEx100'{
     part def 'App-WAN Protocol Stack' specializes ProtocolStack{
         :>> protocols;
 
-        part APP : LPC::APP subsets protocols;
-        part HTTP : LPC::HTTP subsets protocols;
-        part TCP  : LPC::TCP  subsets protocols;
-        part UDP  : LPC::UDP  subsets protocols;
-        part IP   : LPC::IP   subsets protocols;
+        #_LayeredProtocol_ part APP : LPC::APP subsets protocols;
+        #_LayeredProtocol_ part HTTP : LPC::HTTP subsets protocols;
+        #_LayeredProtocol_ part TCP  : LPC::TCP  subsets protocols;
+        #_LayeredProtocol_ part UDP  : LPC::UDP  subsets protocols;
+        #_LayeredProtocol_ part IP   : LPC::IP   subsets protocols;
 
         connection ovr1 : LayeredOn connect upper::>HTTP to lower::>TCP;
         connection ovr2 : LayeredOn connect upper::>TCP  to lower::>IP;
@@ -182,5 +182,26 @@ package 'com.meadortech.LCEx100'{
             connection a1app  : ProtocolStackHConn connect app.stack.APP to stack.APP;
         }
     }
-    
+
+    part def sys3 {
+        part a1   {port appPort : AppStackPort;} 
+        part a2   {port appPort : AppStackPort;} 
+        part wan1 {
+            port wanPortA : WAN_IP_StackPort; 
+            port wanPortB : WAN_IP_StackPort;
+        }
+        connection aw1 : 'App-WAN Stack' connect a1.appPort to wan1.wanPortA{
+            connection a1app  : ProtocolStackHConn connect app.stack.APP to stack.APP;
+            connection a1udp  : ProtocolStackHConn connect app.stack.UDP to stack.UDP;
+            connection a1ip   : ProtocolStackHConn connect app.stack.IP  to stack.IP;
+            connection wan1ip : ProtocolStackHConn connect wan.stack.IP  to stack.IP;
+        }
+        connection aw2 : 'App-WAN Stack' connect a2.appPort to wan1.wanPortB{
+            connection a2app  : ProtocolStackHConn connect app.stack.APP to stack.APP;
+            connection a2udp  : ProtocolStackHConn connect app.stack.UDP to stack.UDP;
+            connection a2ip   : ProtocolStackHConn connect app.stack.IP  to stack.IP;
+            connection wan1ip : ProtocolStackHConn connect wan.stack.IP  to stack.IP;
+        }
+    }
+
 }

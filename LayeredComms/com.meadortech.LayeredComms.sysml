@@ -85,7 +85,7 @@
         	 *  Represents the procol entity's client side of the n-1 protocol's SAP
         	 */
         }
-        abstract #_Protocol_Stm_ part protocolStm [1..*] ordered {
+        abstract #_Protocol_Stm_ state protocolStm [1..*] ordered {
         	doc
         	/*
         	 * Each protocol entity has at least one state machine that governs
@@ -376,9 +376,17 @@
 	package ProtocolStacks {
 		part def LayeredProtocol {
 			doc
-				/* A protocol that is layered with other protocols in a protocol stack. */
+				/* A protocol that is layered with other protocols in a protocol stack.
+				 *  
+				 * 
+				*/
 
 	        attribute protocolName : ScalarValues::String; 			
+		}
+
+		abstract item layeredProtocols : LayeredProtocol [0..*] nonunique;
+		metadata def <_LayeredProtocol_> LayeredProtocolMetadata :> Metaobjects::SemanticMetadata {
+			:>> baseType = layeredProtocols meta SysML::Type;
 		}
 
 		connection def LayeredOn {
