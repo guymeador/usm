@@ -4,3 +4,4 @@
 /examples/ex-LayeredComms/.DS_Store
 .vscode/settings.json
 *.md~
+*.DS_Store
