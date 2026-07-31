@@ -9,6 +9,8 @@ It is a beginning.
 
 ## Content
 
+### SysML 2 Libraries and Packages
+
 - DataFields - Libraries for modeling information/data with or without bit layout representation
     - com.meadortech.Datafields.sysml - Base library
     - com.meadortech.DFScalarValues.sysml - Representation of common scalar data types
@@ -17,7 +19,21 @@ It is a beginning.
 - examples - Basic examples of using the above libraries
     - Simple DataField/DFScalarValues examples
     - Sketch of toy layered protocol definition and use
-    
+
+### SysML 1 Libraries and Packages
+
+The following SysML 1 content was developed inspired by the SysML 2 Libraries and Packages above. These are not automated translations from the SysML 2 versions, but, instead, were created from zero using the same concepts and constructed for immediate use in a SysML 1 ecosystem. These are available as "mdzip" files.
+
+- See ./sysmlv1/LayeredComms/
+
+- LayeredComms - Library with building blocks for layered communications stack modeling inspired by ISO OSI
+
+    - com.meadortech.LayeredCommsProfile.mdzip provides stereotypes and library elements as well as a "pre-fab" package to help one get started with modeling a protocol.
+
+- example of a partial protocol stack definition and use
+
+- ./sysmlv1/doc/ - provides a presentation as a good starting point for understanding the material
+
 
 ## Why and What of these Libraries and Examples?
 ### Why
@@ -205,6 +221,7 @@ libraries will carry separate semantic versioning.
 TBD
 
 ## With Appreciation
+
 ### Initial 0.1.0-alpha Release
 
 Thank you to the OMG System Modeling Community User WG’s Layered Interface Pattern subgroup members listed below. 
@@ -221,6 +238,13 @@ Separate feedback was also received from others listed here. Thank you!:
 - Vince Molnar
 - Juozas Vaicenavicius
 - Simas Vaitekicius
+
+### SysML 1 Content
+
+Thank you to the following for their reviews, comments, and support for the development of the initial SysML 1 content for LayeredComms and the related example:
+
+- OMG System Modeling Community User WGs Layered Interface Pattern subgroup members (listed above).
+- Russell Peak of GA Tech, for his insights, encouragement, and including this content in his excellent intermediate-level short course on applying SysML 1 with patterns and recommended practices.
 
 ## Other Resources
 
